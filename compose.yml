@@ -5,9 +5,15 @@ services:
     restart: unless-stopped
     command: gateway run
     ports:
-      - "8642:8642"
-      - "9119:9119"
+      - "127.0.0.1:8642:8642"
+      - "127.0.0.1:9119:9119"
     volumes:
       - ~/.hermes:/opt/data
     environment:
       HERMES_DASHBOARD: "1"
+      HERMES_DASHBOARD_BASIC_AUTH_USERNAME: admin
+      HERMES_DASHBOARD_BASIC_AUTH_PASSWORD: x7hn2hxbd5v48kmqontv
+      HERMES_DASHBOARD_BASIC_AUTH_SECRET: n5tcxptcl90skn3n2jag88n7f8rdm5fdei76hmmp
+      API_SERVER_ENABLED: "true"
+      API_SERVER_HOST: "0.0.0.0"
+      API_SERVER_KEY: 7zrd3vdl2w8j7salkk8e
