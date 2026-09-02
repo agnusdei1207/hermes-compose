@@ -8,10 +8,17 @@ services:
       - "127.0.0.1:8642:8642"
       - "127.0.0.1:9119:9119"
     volumes:
-      - hermes_data:/opt/data
+      - ${HERMES_HOST_DIR:-~/.hermes}:/opt/data
+      - ${HERMES_HOST_DIR:-~/.hermes}:/root/.hermes
+    env_file:
+      - path: .env
+        required: false
+      - path: ${HERMES_HOST_DIR:-~/.hermes}/.env
+        required: false
     networks:
       - hermes_network
     environment:
+      HERMES_HOME: /opt/data
       HERMES_DASHBOARD: "1"
       HERMES_DASHBOARD_BASIC_AUTH_USERNAME: admin
       HERMES_DASHBOARD_BASIC_AUTH_PASSWORD: admin1234
@@ -19,10 +26,6 @@ services:
       API_SERVER_ENABLED: "true"
       API_SERVER_HOST: "0.0.0.0"
       API_SERVER_KEY: 7zrd3vdl2w8j7salkk8e
-
-volumes:
-  hermes_data:
-    name: hermes_data
 
 networks:
   hermes_network:
