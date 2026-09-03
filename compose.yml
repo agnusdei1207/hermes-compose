@@ -1,6 +1,7 @@
 services:
   hermes:
-    image: nousresearch/hermes-agent:latest
+    build: .
+    image: nousresearch/hermes-agent:custom
     container_name: hermes
     user: root
     restart: unless-stopped
