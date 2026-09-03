@@ -2,31 +2,38 @@ services:
   hermes:
     image: nousresearch/hermes-agent:latest
     container_name: hermes
-    user: root
     restart: unless-stopped
     command: gateway run
     ports:
       - "127.0.0.1:8642:8642"
       - "127.0.0.1:9119:9119"
     volumes:
-      - ${HERMES_HOST_DIR:-~/.hermes}:/opt/data
-      - ${HERMES_HOST_DIR:-~/.hermes}:/root/.hermes
+      - hermes_data:/opt/data
     env_file:
       - path: .env
-        required: false
-      - path: ${HERMES_HOST_DIR:-~/.hermes}/.env
         required: false
     networks:
       - hermes_network
     environment:
       HERMES_HOME: /opt/data
       HERMES_DASHBOARD: "1"
-      HERMES_DASHBOARD_BASIC_AUTH_USERNAME: admin
-      HERMES_DASHBOARD_BASIC_AUTH_PASSWORD: admin1234
+      HERMES_DASHBOARD_BASIC_AUTH_USERNAME: ${HERMES_DASHBOARD_USERNAME:-admin}
+      HERMES_DASHBOARD_BASIC_AUTH_PASSWORD: ${HERMES_DASHBOARD_PASSWORD:-admin1234}
       HERMES_DASHBOARD_BASIC_AUTH_SECRET: n5tcxptcl90skn3n2jag88n7f8rdm5fdei76hmmp
       API_SERVER_ENABLED: "true"
       API_SERVER_HOST: "0.0.0.0"
       API_SERVER_KEY: 7zrd3vdl2w8j7salkk8e
+      # GitHub Tokens
+      GITHUB_TOKEN: ${GITHUB_TOKEN:-}
+      GH_TOKEN: ${GH_TOKEN:-}
+      # Optional LLM API Keys
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+
+volumes:
+  hermes_data:
+    name: hermes_data
 
 networks:
   hermes_network:
